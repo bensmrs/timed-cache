@@ -46,7 +46,7 @@ let test_expiration () =
 let test_wrap () =
   let f x = x + 10 in
   let cache = Timed_cache.create ~check_every:1 ~expire_after:5 3 in
-  let g = Timed_cache.wrap_with cache f in
+  let g = Timed_cache.wrap_with cache ~accept:(fun i _ -> i <> 3) f in
   check (option int) "value absent" (None) (Timed_cache.find_opt cache 0);
   check (option int) "value absent" (None) (Timed_cache.find_opt cache 1);
   check (option int) "value absent" (None) (Timed_cache.find_opt cache 2);
@@ -70,6 +70,8 @@ let test_wrap () =
   check (option int) "value present" (Some 10) (Timed_cache.find_opt cache 0);
   check (option int) "value present" (Some 11) (Timed_cache.find_opt cache 1);
   check (option int) "value present" (Some 12) (Timed_cache.find_opt cache 2);
+  check int "coherent wrapped result" (f 3) (g 3);
+  check (option int) "value absent" (None) (Timed_cache.find_opt cache 3);
   Unix.sleep 2;
   check (option int) "value absent" (None) (Timed_cache.find_opt cache 0);
   check (option int) "value present" (Some 11) (Timed_cache.find_opt cache 1);

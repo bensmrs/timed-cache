@@ -43,16 +43,16 @@ let of_seq ~check_every ~expire_after i =
   let i' = Seq.map convert_seq_item i in
   (Hashtbl.of_seq i', check_every, expire_after)
 
-let wrap_with' c f ~transform key =
+let wrap_with' c f ~transform ?(accept=fun _ _ -> true) key =
   let key' = transform key in
   match find_opt c key' with
   | Some data -> data
-  | None -> let data = f key in add c key' data; data
+  | None -> let data = f key in if accept key' data then add c key' data; data
 
 let wrap_with c f = wrap_with' c f ~transform:(fun x -> x)
 
-let wrap' ~check_every ~expire_after ?random ?(initial_size=32) f ~transform =
-  wrap_with' (create ~check_every ~expire_after ?random initial_size) f ~transform
+let wrap' ~check_every ~expire_after ?random ?(initial_size=32) =
+  wrap_with' (create ~check_every ~expire_after ?random initial_size)
 
-let wrap ~check_every ~expire_after ?random ?(initial_size=32) f =
-  wrap_with (create ~check_every ~expire_after ?random initial_size) f
+let wrap ~check_every ~expire_after ?random ?(initial_size=32)=
+  wrap_with (create ~check_every ~expire_after ?random initial_size)

@@ -32,15 +32,16 @@ val replace_seq : ('a, 'b) t -> ('a * 'b) Seq.t -> unit
 val of_seq : check_every:int -> expire_after:int -> ('a * 'b) Seq.t -> ('a, 'b) t
 
 (** Wrap a unary function to cache its return values using a timed cache *)
-val wrap : check_every:int -> expire_after:int -> ?random:bool -> ?initial_size:int ->
-           ('a -> 'b) -> 'a -> 'b
+val wrap : check_every:int -> expire_after:int -> ?random:bool -> ?initial_size:int -> ('a -> 'b) ->
+           ?accept:('a -> 'b -> bool) -> 'a -> 'b
 
 (** Wrap a function to cache its return values using a timed cache *)
 val wrap' : check_every:int -> expire_after:int -> ?random:bool -> ?initial_size:int ->
-           ('a -> 'b) -> transform:('a -> 'c) -> 'a -> 'b
+            ('a -> 'b) -> transform:('a -> 'c) -> ?accept:('c -> 'b -> bool) -> 'a -> 'b
 
 (** Wrap a unary function with an existing cache *)
-val wrap_with :  ('a, 'b) t -> ('a -> 'b) -> 'a -> 'b
+val wrap_with : ('a, 'b) t -> ('a -> 'b) -> ?accept:('a -> 'b -> bool) -> 'a -> 'b
 
 (** Wrap a function with an existing cache *)
-val wrap_with' :  ('a, 'b) t -> ('c -> 'b) -> transform:('c -> 'a) -> 'c -> 'b
+val wrap_with' : ('a, 'b) t -> ('c -> 'b) -> transform:('c -> 'a) -> ?accept:('a -> 'b -> bool) ->
+                 'c -> 'b
