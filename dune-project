@@ -11,7 +11,7 @@
 
 (package
  (name timed-cache)
- (synopsis "UNIX-specific timed key-value store")
- (description "This package implements a key-value store where an expiration check is scheduled using SIGALRM signals")
+ (synopsis "Timed key-value store")
+ (description "This package implements a key-value store where an expiration check is scheduled using different strategies")
  (depends
   (alcotest (>= 1.6.0))))
