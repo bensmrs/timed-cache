@@ -1,4 +1,4 @@
 (library
  (name timed_cache)
  (public_name timed-cache)
- (libraries ptime ptime.clock.os))
+ (libraries ptime ptime.clock.os unix))

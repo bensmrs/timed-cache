@@ -53,4 +53,4 @@ module type CACHE = sig
 end
 
 
-module Make (S : Strategy.STRATEGY) : CACHE
+module Make (_ : Strategy.STRATEGY) : CACHE

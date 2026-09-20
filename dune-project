@@ -1,4 +1,4 @@
-(lang dune 2.7)
+(lang dune 3.18)
 (name timed-cache)
 (version 0.1.0)
 (generate_opam_files true)
@@ -14,4 +14,6 @@
  (synopsis "Timed key-value store")
  (description "This package implements a key-value store where an expiration check is scheduled using different strategies")
  (depends
-  (alcotest (>= 1.6.0))))
+  (alcotest :with-test)
+  ptime)
+(maintenance_intent "(latest)"))
